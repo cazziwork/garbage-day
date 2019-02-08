@@ -1,19 +1,74 @@
 const Alexa = require('ask-sdk-core');
 const Adapter = require('ask-sdk-dynamodb-persistence-adapter');
 const _ = require('lodash');
+const Aigle = require('aigle');
+
+Aigle.mixin(_);
+
+class DAO {
+  constructor(hadler) {
+    const { attributesManager } = hadler;
+    this.attributesManager = attributesManager;
+  }
+
+  async getData() {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    return persistentAttributes.data;
+  }
+
+  async createData(data) {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    persistentAttributes.data = data;
+    this.save(persistentAttributes);
+  }
+
+  async insertData(data) {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    persistentAttributes.push(data);
+    this.save(persistentAttributes);
+  }
+
+  async save(persistentAttributes) {
+    this.attributesManager.setPersistentAttributes(persistentAttributes);
+    await this.attributesManager.savePersistentAttributes();
+  }
+}
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    const speechText = 'ようこそうちのごみへ。';
 
+    // キーが登録済みの場合
+    //handlerInput.requestEnvelope.request.type == 'IntentRequest';
+    //handlerInput.requestEnvelope.request.intent.name == 'RegistIntent';
     return handlerInput.responseBuilder
-      .speak(speechText)
-      .reprompt(speechText)
-      .withSimpleCard('Hello World', speechText)
+      .speak("とうろくするねー")
       .getResponse();
+
+    // const { attributesManager } = handlerInput;
+    // const persistentAttributes = await attributesManager.getPersistentAttributes();
+
+    // // console.log('att:' + persistentAttributes);
+
+    // if (_.isNil(await attributesManager.getPersistentAttributes())) {
+
+    // if ('undefined' === persistentAttributes) {
+    //   // ゴミの日データが未登録の場合は登録を促す
+    //   console.log('うえ？');
+    //   return RegistIntentHandler.handle(handlerInput);
+    // } else {
+    //   console.log('した？');
+
+    //   return RegistIntentHandler.handle(handlerInput);
+    
+    // const speechText = 'ようこそ我が家のゴミの日へ。';
+    // return handlerInput.responseBuilder
+    //   .speak(speechText)
+    //   .reprompt(speechText)
+    //   .withSimpleCard('Hello World', speechText)
+    //   .getResponse();
   },
 };
 
@@ -26,36 +81,53 @@ const RegistIntentHandler = {
 
     const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
     const day_of_week = handlerInput.requestEnvelope.request.intent.slots.day_of_week.value;
-    const day_option = handlerInput.requestEnvelope.request.intent.slots.day_option.value;
-    const key = day_option + day_of_week;
+    const week_count = handlerInput.requestEnvelope.request.intent.slots.week_count.value;
+    const key = week_count + day_of_week + item;
 
-    const { attributesManager } = handlerInput;
-    const persistentAttributes = await attributesManager.getPersistentAttributes();
-
-    if (undefined != _.find(persistentAttributes.data, { "key": key })) {
+    let dynamo = new DAO(handlerInput);
+    if (!await Aigle.isNil(await Aigle.find(await dynamo.getData(), { "key": key }))) {
       // すでにキーが登録済みの場合
-      // TODO 上書きするか確認したい
       return handlerInput.responseBuilder
-        .speak(key + 'はすでに登録されています。')
+        .speak(key + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
         .getResponse();
     }
 
-    // console.log('find:' + JSON.stringify(_.find(persistentAttributes.data, { "key": day_option + day_of_week })));
-    const regist_data = { "key": key, "value": item, "day_of_week": day_of_week, "day_option": day_option };
-    if (undefined === persistentAttributes.data) {
-      persistentAttributes.data = [regist_data];
+    const regist_data = { "key": key, "item": item, "day_of_week": day_of_week, "week_count": week_count };
+    if (undefined === dynamo.getData()) {
+      dynamo.createData([regist_data]);
     } else {
-      let data_array = persistentAttributes.data;
-      data_array.push(regist_data);
-      persistentAttributes.data = data_array;
+      dynamo.insertData(regist_data);
     }
-    // 永続アトリビュートの保存
-    attributesManager.setPersistentAttributes(persistentAttributes);
-    await attributesManager.savePersistentAttributes();
 
     return handlerInput.responseBuilder
-      .speak(key + item + 'を登録しました')
+      .speak(key + 'を登録しました。他にも登録する場合は 登録して といってください。')
       .getResponse();
+
+    // const { attributesManager } = handlerInput;
+    // const persistentAttributes = await attributesManager.getPersistentAttributes();
+
+    // if (!_.isNil(_.find(persistentAttributes.data, { "key": key }))) {
+    //   // すでにキーが登録済みの場合
+    //   return handlerInput.responseBuilder
+    //     .speak(key + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
+    //     .getResponse();
+    // }
+
+    // const regist_data = { "key": key, "item": item, "day_of_week": day_of_week, "week_count": week_count };
+
+    // if (undefined === persistentAttributes.data) {
+    //   persistentAttributes.data = [regist_data];
+    // } else {
+    //   let data_array = persistentAttributes.data;
+    //   data_array.push(regist_data);
+    //   persistentAttributes.data = data_array;
+    // }
+    // attributesManager.setPersistentAttributes(persistentAttributes);
+    // await attributesManager.savePersistentAttributes();
+
+    // return handlerInput.responseBuilder
+    //   .speak(key + 'を登録しました。他にも登録する場合は 登録して といってください。')
+    //   .getResponse();
   },
 };
 
@@ -66,34 +138,38 @@ const TellMeIntentHandler = {
   },
   async handle(handlerInput) {
 
-    const { attributesManager } = handlerInput;
-    const persistentAttributes = await attributesManager.getPersistentAttributes();
-
-    const speechText = '今日は' + getTodaysItem(persistentAttributes.data) + 'です';
     return handlerInput.responseBuilder
-      .speak(speechText)
+      .speak('tell me')
       .getResponse();
+
+    // const { attributesManager } = handlerInput;
+    // const persistentAttributes = await attributesManager.getPersistentAttributes();
+
+    // const speechText = '今日は' + getTodaysItem(persistentAttributes.data) + 'です';
+    // return handlerInput.responseBuilder
+    //   .speak(speechText)
+    //   .getResponse();
   },
 };
 
 function getTodaysItem(items) {
   const today = getDayAndCount(new Date());
   console.log('today:' + JSON.stringify(today));
-  let itemValue = 'ゴミの日登録がないよう';
+  let itemValue = '';
 
   _.forEach(items, function (item) {
-    
+
     if (item.day_of_week != today.day) {
       return;
     }
-    if (item.day_option === '毎週') {
-      console.log('option:' + item.day_option);
-      itemValue  = item.value;
+    if (item.week_count === '毎週') {
+      console.log('option:' + item.week_count);
+      itemValue = item.item;
       return false;
     }
-    if (item.day_option === today.count) {
-      console.log('option:' + item.day_option);
-      itemValue  = item.value;
+    if (item.week_count === today.count) {
+      console.log('option:' + item.week_count);
+      itemValue = item.item;
       return false;
     }
   });
@@ -102,8 +178,10 @@ function getTodaysItem(items) {
 }
 
 function getDayAndCount(date) {
-  return { day: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"][date.getDay()], 
-           count: ["第一","第二","第三","第四","第五"][Math.floor((date.getDate() - 1) / 7)] };
+  return {
+    day: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"][date.getDay()],
+    count: ["第一", "第二", "第三", "第四", "第五"][Math.floor((date.getDate() - 1) / 7)]
+  };
 }
 
 const HelpIntentHandler = {
@@ -163,7 +241,7 @@ const ErrorHandler = {
 };
 
 const config = {
-  tableName: 'MyTrashSkillTable',
+  tableName: 'GarbageDayTable',
   createTable: true
 };
 const DynamoDBAdapter = new Adapter.DynamoDbPersistenceAdapter(config);
