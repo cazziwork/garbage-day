@@ -2,37 +2,38 @@ const Alexa = require('ask-sdk-core');
 const Adapter = require('ask-sdk-dynamodb-persistence-adapter');
 const _ = require('lodash');
 const Aigle = require('aigle');
+const DAO = require('./db-access');
 
 Aigle.mixin(_);
 
-class DAO {
-  constructor(hadler) {
-    const { attributesManager } = hadler;
-    this.attributesManager = attributesManager;
-  }
+// class DAO {
+//   constructor(hadler) {
+//     const { attributesManager } = hadler;
+//     this.attributesManager = attributesManager;
+//   }
 
-  async getData() {
-    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-    return persistentAttributes.data;
-  }
+//   async getData() {
+//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+//     return persistentAttributes.data;
+//   }
 
-  async createData(data) {
-    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-    persistentAttributes.data = data;
-    this.save(persistentAttributes);
-  }
+//   async createData(data) {
+//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+//     persistentAttributes.data = data;
+//     this.save(persistentAttributes);
+//   }
 
-  async insertData(data) {
-    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-    persistentAttributes.push(data);
-    this.save(persistentAttributes);
-  }
+//   async insertData(data) {
+//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+//     persistentAttributes.push(data);
+//     this.save(persistentAttributes);
+//   }
 
-  async save(persistentAttributes) {
-    this.attributesManager.setPersistentAttributes(persistentAttributes);
-    await this.attributesManager.savePersistentAttributes();
-  }
-}
+//   async save(persistentAttributes) {
+//     this.attributesManager.setPersistentAttributes(persistentAttributes);
+//     await this.attributesManager.savePersistentAttributes();
+//   }
+// }
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -40,35 +41,16 @@ const LaunchRequestHandler = {
   },
   handle(handlerInput) {
 
-    // キーが登録済みの場合
-    //handlerInput.requestEnvelope.request.type == 'IntentRequest';
-    //handlerInput.requestEnvelope.request.intent.name == 'RegistIntent';
+    // TODO 本当はここでDynamoを見に行ってデータが登録済みならいきなりゴミの日を知らせようとおもったけど、
+    // フレームワークの作りとしてできないため断念。
+    // 今後の機能拡張を期待してTODOのままとしておく。
+
+    const speechText = 'こんにちは。';
     return handlerInput.responseBuilder
-      .speak("とうろくするねー")
+      .speak(speechText)
+      .reprompt(speechText)
+      .withSimpleCard('Hello World', speechText)
       .getResponse();
-
-    // const { attributesManager } = handlerInput;
-    // const persistentAttributes = await attributesManager.getPersistentAttributes();
-
-    // // console.log('att:' + persistentAttributes);
-
-    // if (_.isNil(await attributesManager.getPersistentAttributes())) {
-
-    // if ('undefined' === persistentAttributes) {
-    //   // ゴミの日データが未登録の場合は登録を促す
-    //   console.log('うえ？');
-    //   return RegistIntentHandler.handle(handlerInput);
-    // } else {
-    //   console.log('した？');
-
-    //   return RegistIntentHandler.handle(handlerInput);
-    
-    // const speechText = 'ようこそ我が家のゴミの日へ。';
-    // return handlerInput.responseBuilder
-    //   .speak(speechText)
-    //   .reprompt(speechText)
-    //   .withSimpleCard('Hello World', speechText)
-    //   .getResponse();
   },
 };
 
@@ -102,32 +84,6 @@ const RegistIntentHandler = {
     return handlerInput.responseBuilder
       .speak(key + 'を登録しました。他にも登録する場合は 登録して といってください。')
       .getResponse();
-
-    // const { attributesManager } = handlerInput;
-    // const persistentAttributes = await attributesManager.getPersistentAttributes();
-
-    // if (!_.isNil(_.find(persistentAttributes.data, { "key": key }))) {
-    //   // すでにキーが登録済みの場合
-    //   return handlerInput.responseBuilder
-    //     .speak(key + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
-    //     .getResponse();
-    // }
-
-    // const regist_data = { "key": key, "item": item, "day_of_week": day_of_week, "week_count": week_count };
-
-    // if (undefined === persistentAttributes.data) {
-    //   persistentAttributes.data = [regist_data];
-    // } else {
-    //   let data_array = persistentAttributes.data;
-    //   data_array.push(regist_data);
-    //   persistentAttributes.data = data_array;
-    // }
-    // attributesManager.setPersistentAttributes(persistentAttributes);
-    // await attributesManager.savePersistentAttributes();
-
-    // return handlerInput.responseBuilder
-    //   .speak(key + 'を登録しました。他にも登録する場合は 登録して といってください。')
-    //   .getResponse();
   },
 };
 
