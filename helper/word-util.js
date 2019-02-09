@@ -1,14 +1,14 @@
 const _ = require('lodash');
 
-module.exports = class Word {
+module.exports = class WordUtil {
 
-  getGarbageWord(today_list, tommorow_list) {
+  static getGarbageWord(today_list, tommorow_list) {
     const today_word = this.createBody(today_list);
     const tommorow_word = this.createBody(tommorow_list);
     return '今日のゴミは' + today_word + '明日のゴミは' + tommorow_word;
   }
 
-  createBody(garbage_list) {
+  static createBody(garbage_list) {
     if (garbage_list.length === 0) {
       return 'ありません。';
     }

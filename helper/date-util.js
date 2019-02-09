@@ -2,17 +2,17 @@ const _ = require('lodash');
 
 module.exports = class DateUtil {
 
-  getToday() {
+  static getToday() {
     return new Date();
   }
 
-  getTommorow() {
+  static getTommorow() {
     let day = this.getToday();
     day.setDate(day.getDate() + 1);
     return day;
   }
 
-  getItemList(data_list, target_day) {
+  static getItemList(data_list, target_day) {
     const day = this.getDayAndCount(target_day);
     console.log('day:' + JSON.stringify(day));
     let itemValue = [];
@@ -36,11 +36,15 @@ module.exports = class DateUtil {
   
   }
   
-  getDayAndCount(date) {
+  static getDayAndCount(date) {
     return {
       day: ["にちよう", "げつよう", "かよう", "すいよう", "もくよう", "きんよう", "どよう"][date.getDay()],
       count: ["だいいち", "だいに", "だいさん", "だいよん", "だいご"][Math.floor((date.getDate() - 1) / 7)]
     };
+  }
+
+  static cleansing(target) {
+
   }
 
 }

@@ -5,7 +5,7 @@ const Aigle = require('aigle');
 Aigle.mixin(_);
 
 const DAO = require('./helper/db-access');
-const Word = require('./helper/word');
+const WordUtil = require('./helper/word-util');
 const DateUtil = require('./helper/date-util');
 
 const LaunchRequestHandler = {
@@ -34,9 +34,14 @@ const RegistIntentHandler = {
   },
   async handle(handlerInput) {
 
-    const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
     const day_of_week = handlerInput.requestEnvelope.request.intent.slots.day_of_week.value;
     const week_count = handlerInput.requestEnvelope.request.intent.slots.week_count.value;
+    const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
+    
+    // // 曜日のゆれ補正
+    // const date_util = new DateUtil();
+    // day_of_week = date_util.cleansing(day_of_week);
+
     const key = week_count + day_of_week + item;
 
     const dynamo = new DAO(handlerInput);
@@ -70,13 +75,12 @@ const TellMeIntentHandler = {
   async handle(handlerInput) {
 
     const dynamo = new DAO(handlerInput);
+
     const data_list = await dynamo.getData();
-    const word = new Word();
-    const date = new DateUtil();
-    const today_list = date.getItemList(data_list, date.getToday());
-    const tommorow_list = date.getItemList(data_list, date.getTommorow());
+    const today_list = DateUtil.getItemList(data_list, DateUtil.getToday());
+    const tommorow_list = DateUtil.getItemList(data_list, DateUtil.getTommorow());
     
-    const speechText = word.getGarbageWord(today_list, tommorow_list);
+    const speechText = WordUtil.getGarbageWord(today_list, tommorow_list);
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -90,7 +94,7 @@ const HelpIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'おしえてというと今日のゴミをお知らせします';
+    const speechText = 'おしえてというと今日と明日のゴミをお知らせします';
 
     return handlerInput.responseBuilder
       .speak(speechText)
