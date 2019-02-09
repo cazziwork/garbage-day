@@ -34,13 +34,9 @@ const RegistIntentHandler = {
   },
   async handle(handlerInput) {
 
-    const day_of_week = handlerInput.requestEnvelope.request.intent.slots.day_of_week.value;
+    const day_of_week = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.day_of_week.value);
     const week_count = handlerInput.requestEnvelope.request.intent.slots.week_count.value;
     const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
-    
-    // // 曜日のゆれ補正
-    // const date_util = new DateUtil();
-    // day_of_week = date_util.cleansing(day_of_week);
 
     const key = week_count + day_of_week + item;
 
@@ -50,7 +46,7 @@ const RegistIntentHandler = {
     if (!await Aigle.isNil(await Aigle.find(garbage_data, { "key": key }))) {
       // すでにキーが登録済みの場合
       return handlerInput.responseBuilder
-        .speak(key + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
+        .speak(week_count + day_of_week + '<break time="0.5s"/>' + item + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
         .getResponse();
     }
 
@@ -62,7 +58,7 @@ const RegistIntentHandler = {
     }
 
     return handlerInput.responseBuilder
-      .speak(key + 'を登録しました。他にも登録する場合は 登録して といってください。')
+      .speak(week_count + day_of_week + '<break time="0.5s"/>' + item + 'を登録しました。他にも登録する場合は 登録して といってください。')
       .getResponse();
   },
 };
