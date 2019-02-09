@@ -2,38 +2,10 @@ const Alexa = require('ask-sdk-core');
 const Adapter = require('ask-sdk-dynamodb-persistence-adapter');
 const _ = require('lodash');
 const Aigle = require('aigle');
+
 const DAO = require('./db-access');
 
 Aigle.mixin(_);
-
-// class DAO {
-//   constructor(hadler) {
-//     const { attributesManager } = hadler;
-//     this.attributesManager = attributesManager;
-//   }
-
-//   async getData() {
-//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-//     return persistentAttributes.data;
-//   }
-
-//   async createData(data) {
-//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-//     persistentAttributes.data = data;
-//     this.save(persistentAttributes);
-//   }
-
-//   async insertData(data) {
-//     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
-//     persistentAttributes.push(data);
-//     this.save(persistentAttributes);
-//   }
-
-//   async save(persistentAttributes) {
-//     this.attributesManager.setPersistentAttributes(persistentAttributes);
-//     await this.attributesManager.savePersistentAttributes();
-//   }
-// }
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -66,8 +38,10 @@ const RegistIntentHandler = {
     const week_count = handlerInput.requestEnvelope.request.intent.slots.week_count.value;
     const key = week_count + day_of_week + item;
 
-    let dynamo = new DAO(handlerInput);
-    if (!await Aigle.isNil(await Aigle.find(await dynamo.getData(), { "key": key }))) {
+    const dynamo = new DAO(handlerInput);
+    const garbage_data = await dynamo.getData();
+    
+    if (!await Aigle.isNil(await Aigle.find(garbage_data, { "key": key }))) {
       // すでにキーが登録済みの場合
       return handlerInput.responseBuilder
         .speak(key + 'はすでに登録されています。他のゴミを登録する場合は 登録して といってください。')
@@ -75,7 +49,7 @@ const RegistIntentHandler = {
     }
 
     const regist_data = { "key": key, "item": item, "day_of_week": day_of_week, "week_count": week_count };
-    if (undefined === dynamo.getData()) {
+    if (await Aigle.isNil(garbage_data)) {
       dynamo.createData([regist_data]);
     } else {
       dynamo.insertData(regist_data);
@@ -94,39 +68,36 @@ const TellMeIntentHandler = {
   },
   async handle(handlerInput) {
 
+    let dynamo = new DAO(handlerInput);
+    let items = await getTodaysItemList(await dynamo.getData());
+    console.log(items);
+
+    //const speechText = '今日は' + getTodaysItem(persistentAttributes.data) + 'です';
     return handlerInput.responseBuilder
-      .speak('tell me')
+      .speak('test')
       .getResponse();
-
-    // const { attributesManager } = handlerInput;
-    // const persistentAttributes = await attributesManager.getPersistentAttributes();
-
-    // const speechText = '今日は' + getTodaysItem(persistentAttributes.data) + 'です';
-    // return handlerInput.responseBuilder
-    //   .speak(speechText)
-    //   .getResponse();
   },
 };
 
-function getTodaysItem(items) {
+async function getTodaysItemList(data_list) {
   const today = getDayAndCount(new Date());
   console.log('today:' + JSON.stringify(today));
-  let itemValue = '';
+  let itemValue = [];
 
-  _.forEach(items, function (item) {
+  await Aigle.forEach(data_list, function (data) {
 
-    if (item.day_of_week != today.day) {
+    if (data.day_of_week != today.day) {
       return;
     }
-    if (item.week_count === '毎週') {
-      console.log('option:' + item.week_count);
-      itemValue = item.item;
-      return false;
+    if (data.week_count === 'まいしゅう') {
+      console.log('option:' + data.week_count);
+      itemValue.push(data.item);
+      return;
     }
-    if (item.week_count === today.count) {
-      console.log('option:' + item.week_count);
-      itemValue = item.item;
-      return false;
+    if (data.week_count === today.count) {
+      console.log('option:' + data.week_count);
+      itemValue.push(data.item);
+      return;
     }
   });
   return itemValue;
@@ -135,8 +106,8 @@ function getTodaysItem(items) {
 
 function getDayAndCount(date) {
   return {
-    day: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"][date.getDay()],
-    count: ["第一", "第二", "第三", "第四", "第五"][Math.floor((date.getDate() - 1) / 7)]
+    day: ["にちよう", "げつよう", "かよう", "すいよう", "もくよう", "きんよう", "どよう"][date.getDay()],
+    count: ["だいいち", "だいに", "だいさん", "だいよん", "だいご"][Math.floor((date.getDate() - 1) / 7)]
   };
 }
 
