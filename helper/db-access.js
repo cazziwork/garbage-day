@@ -15,7 +15,7 @@ module.exports = class DAO {
     this.save(persistentAttributes);
   }
 
-  async insertData(data) {
+  async pushData(data) {
     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
     persistentAttributes.data.push(data);
     this.save(persistentAttributes);

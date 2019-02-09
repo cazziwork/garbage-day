@@ -2,10 +2,10 @@ const Alexa = require('ask-sdk-core');
 const Adapter = require('ask-sdk-dynamodb-persistence-adapter');
 const _ = require('lodash');
 const Aigle = require('aigle');
-
-const DAO = require('./db-access');
-
 Aigle.mixin(_);
+
+const DAO = require('./helper/db-access');
+const Word = require('./helper/word');
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -52,7 +52,7 @@ const RegistIntentHandler = {
     if (await Aigle.isNil(garbage_data)) {
       dynamo.createData([regist_data]);
     } else {
-      dynamo.insertData(regist_data);
+      dynamo.pushData(regist_data);
     }
 
     return handlerInput.responseBuilder
@@ -68,13 +68,12 @@ const TellMeIntentHandler = {
   },
   async handle(handlerInput) {
 
-    let dynamo = new DAO(handlerInput);
-    let items = await getTodaysItemList(await dynamo.getData());
-    console.log(items);
+    const dynamo = new DAO(handlerInput);
+    const word = new Word();
+    const speechText = await word.getGarbageWord(await getTodaysItemList(await dynamo.getData()))
 
-    //const speechText = '今日は' + getTodaysItem(persistentAttributes.data) + 'です';
     return handlerInput.responseBuilder
-      .speak('test')
+      .speak(speechText)
       .getResponse();
   },
 };
