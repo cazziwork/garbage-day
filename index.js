@@ -6,6 +6,7 @@ Aigle.mixin(_);
 
 const DAO = require('./helper/db-access');
 const Word = require('./helper/word');
+const DateUtil = require('./helper/date-util');
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -40,7 +41,7 @@ const RegistIntentHandler = {
 
     const dynamo = new DAO(handlerInput);
     const garbage_data = await dynamo.getData();
-    
+
     if (!await Aigle.isNil(await Aigle.find(garbage_data, { "key": key }))) {
       // すでにキーが登録済みの場合
       return handlerInput.responseBuilder
@@ -69,46 +70,19 @@ const TellMeIntentHandler = {
   async handle(handlerInput) {
 
     const dynamo = new DAO(handlerInput);
+    const data_list = await dynamo.getData();
     const word = new Word();
-    const speechText = await word.getGarbageWord(await getTodaysItemList(await dynamo.getData()))
+    const date = new DateUtil();
+    const today_list = date.getItemList(data_list, date.getToday());
+    const tommorow_list = date.getItemList(data_list, date.getTommorow());
+    
+    const speechText = word.getGarbageWord(today_list, tommorow_list);
 
     return handlerInput.responseBuilder
       .speak(speechText)
       .getResponse();
   },
 };
-
-async function getTodaysItemList(data_list) {
-  const today = getDayAndCount(new Date());
-  console.log('today:' + JSON.stringify(today));
-  let itemValue = [];
-
-  await Aigle.forEach(data_list, function (data) {
-
-    if (data.day_of_week != today.day) {
-      return;
-    }
-    if (data.week_count === 'まいしゅう') {
-      console.log('option:' + data.week_count);
-      itemValue.push(data.item);
-      return;
-    }
-    if (data.week_count === today.count) {
-      console.log('option:' + data.week_count);
-      itemValue.push(data.item);
-      return;
-    }
-  });
-  return itemValue;
-
-}
-
-function getDayAndCount(date) {
-  return {
-    day: ["にちよう", "げつよう", "かよう", "すいよう", "もくよう", "きんよう", "どよう"][date.getDay()],
-    count: ["だいいち", "だいに", "だいさん", "だいよん", "だいご"][Math.floor((date.getDate() - 1) / 7)]
-  };
-}
 
 const HelpIntentHandler = {
   canHandle(handlerInput) {

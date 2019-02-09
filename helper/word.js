@@ -1,28 +1,28 @@
 const _ = require('lodash');
-const Aigle = require('aigle');
-Aigle.mixin(_);
 
 module.exports = class Word {
 
-  constructor() {}
+  getGarbageWord(today_list, tommorow_list) {
+    const today_word = this.createBody(today_list);
+    const tommorow_word = this.createBody(tommorow_list);
+    return '今日のゴミは' + today_word + '明日のゴミは' + tommorow_word;
+  }
 
-  async getGarbageWord(items) {
-
-    if (items.length === 0) {
-      return 'ゴミの日データの登録がありませんでした。データを登録する場合は 登録して といってください。';
+  createBody(garbage_list) {
+    if (garbage_list.length === 0) {
+      return 'ありません。';
     }
 
-    let item_word = '';
-    await Aigle.forEach(items, function (item) {
-      console.log('item:' + item);
+    let body = '';
+    _.forEach(garbage_list, function (garbage) {
+      console.log('garbage:' + garbage);
       
-      if (item_word === '') {
-        item_word = item;
+      if (body === '') {
+        body = garbage;
       } else {
-        item_word = item_word + 'と' + item; 
+        body = body + 'と' + garbage; 
       }
     });
-
-    return '今日のゴミは' + item_word + 'です。';
+    return body + 'です。';
   }
 }
