@@ -13,7 +13,7 @@ const RegistIntentHandler = {
   async handle(handlerInput) {
 
     const day_of_week = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.day_of_week.value);
-    const week_count = handlerInput.requestEnvelope.request.intent.slots.week_count.value;
+    const week_count = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.week_count.value);
     const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
 
     const key = week_count + day_of_week + item;

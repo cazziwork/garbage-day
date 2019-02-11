@@ -13,8 +13,11 @@ const DeleteIntentHandler = {
   },
   async handle(handlerInput) {
 
+    const day_of_week = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.day_of_week.value);
+    const week_count = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.week_count.value);
+
     return handlerInput.responseBuilder
-      .speak('delete')
+      .speak(week_count * day_of_week)
       .getResponse();
 
     // const day_of_week = DateUtil.cleansing(handlerInput.requestEnvelope.request.intent.slots.day_of_week.value);

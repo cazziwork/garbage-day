@@ -2,10 +2,10 @@ const DAO = require('../helper/db-access');
 const WordUtil = require('../helper/word-util');
 const DateUtil = require('../helper/date-util');
 
-const TellMeIntentHandler = {
+const GetGarbageIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'TellMeIntent';
+      && handlerInput.requestEnvelope.request.intent.name === 'GetGarbageIntent';
   },
   async handle(handlerInput) {
 
@@ -23,4 +23,4 @@ const TellMeIntentHandler = {
   },
 };
 
-module.exports = TellMeIntentHandler;
+module.exports = GetGarbageIntentHandler;

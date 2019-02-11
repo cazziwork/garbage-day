@@ -9,7 +9,8 @@ const ErrorHandler = require('./intent/default/Error');
 
 const RegistIntentHandler = require('./intent/RegistIntent');
 const DeleteIntentHandler = require('./intent/DeletetIntent');
-const TellMeIntentHandler = require('./intent/TellMeIntent');
+const GetGarbageIntentHandler = require('./intent/GetGarbageIntent');
+const GetRegistItemIntentHandler = require('./intent/GetRegistItemIntent');
 
 const config = {
   tableName: 'GarbageDayTable',
@@ -24,7 +25,8 @@ exports.handler = skillBuilder
     LaunchRequestHandler,
     RegistIntentHandler,
     DeleteIntentHandler,
-    TellMeIntentHandler,
+    GetRegistItemIntentHandler,
+    GetGarbageIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
