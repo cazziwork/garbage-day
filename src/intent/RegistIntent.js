@@ -1,7 +1,9 @@
 const _ = require('lodash');
+const util = require('util');
 
 const DAO = require('../helper/db-access');
 const DateUtil = require('../helper/date-util');
+const Message = require('../message');
 
 const RegistIntentHandler = {
   canHandle(handlerInput) {
@@ -21,7 +23,8 @@ const RegistIntentHandler = {
     if (_.filter(garbage_data, { 'key': key }).length != 0) {
       // すでにキーが登録済みの場合
       return handlerInput.responseBuilder
-        .speak(day_and_count.count + day_and_count.day + '<break time="0.3s"/>' + item + 'はすでに登録されています')
+        .speak(util.format(Message.REGIST_DUPLICATE, day_and_count.count,day_and_count.day,item) + Message.REGIST_AFTER)
+        .reprompt(Message.HELP)
         .getResponse();
     }
 
@@ -33,7 +36,8 @@ const RegistIntentHandler = {
     }
 
     return handlerInput.responseBuilder
-      .speak(day_and_count.count + day_and_count.day + '<break time="0.3s"/>' + item + 'を登録しました')
+      .speak(util.format(Message.REGIST_COMPLETE, day_and_count.count,day_and_count.day,item) + Message.REGIST_AFTER)
+      .reprompt(Message.HELP)
       .getResponse();
   },
 };

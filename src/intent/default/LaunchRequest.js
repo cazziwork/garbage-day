@@ -12,7 +12,7 @@ const LaunchRequestHandler = {
     return handlerInput.responseBuilder
       .speak(speechText)
       .reprompt(speechText)
-      .withSimpleCard('Hello World', speechText)
+
       .getResponse();
   },
 };
