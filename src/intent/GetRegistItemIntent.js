@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
 const DAO = require('../helper/db-access');
-const WordUtil = require('../helper/word-util');
 const DateUtil = require('../helper/date-util');
 
 const GetRegistItemIntentHandler = {
@@ -24,8 +23,15 @@ const GetRegistItemIntentHandler = {
       items.push(data.key);
     });
 
+    let speechText = '';
+    if (items.length === 0) {
+      speechText = '登録されているデータがありませんでした';
+    } else {
+      speechText = items + 'が登録されています';
+    }
+
     return handlerInput.responseBuilder
-      .speak(WordUtil.getRegistItemWord(items))
+      .speak(speechText)
       .getResponse();
   },
 };

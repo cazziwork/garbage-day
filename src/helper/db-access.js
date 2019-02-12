@@ -10,6 +10,10 @@ module.exports = class DAO {
   }
 
   async createData(data) {
+    this.putData([data]);
+  }
+
+  async putData(data) {
     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
     persistentAttributes.data = data;
     this.save(persistentAttributes);
