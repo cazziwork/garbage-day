@@ -1,3 +1,5 @@
+const Message = require('../../message');
+
 const ErrorHandler = {
   canHandle() {
     return true;
@@ -6,7 +8,7 @@ const ErrorHandler = {
     console.log(`Error handled: ${error.message}`);
 
     return handlerInput.responseBuilder
-      .speak('ごめんなさい、ちょっとわかりませんでした。')
+      .speak('<say-as interpret-as="interjection">ごめんなさい</say-as>、ちょっとわかりませんでした。')
       .getResponse();
   },
 };

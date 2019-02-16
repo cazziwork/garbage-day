@@ -12,12 +12,45 @@ module.exports = class DateUtil {
     return day;
   }
 
+  static getHourGreeting(hour) {
+    switch(hour) {
+      case 19:
+      case 20:
+      case 21:
+      case 22:
+      case 23:
+      case 24:
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        return 'こんばんわ。';
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+        return 'おはようございます。';
+      case 11:
+      case 12:
+      case 13:
+      case 14:
+      case 15:
+      case 16:
+      case 17:
+      case 18:
+      default:
+        return 'こんにちは。';
+    }
+  }
+
   static getItemList(data_list, target_day) {
     const day = this.getDayAndCount(target_day);
     let itemValue = [];
 
     _.forEach(data_list, function (data) {
-
       if (data.day != day.day) {
         return;
       }

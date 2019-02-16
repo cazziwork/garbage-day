@@ -11,10 +11,20 @@ const RegistIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'RegistIntent';
   },
   async handle(handlerInput) {
-    
-    const day_and_count = DateUtil.convertDayAndCount(handlerInput.requestEnvelope.request.intent.slots.day_and_count.value);
-    const item = handlerInput.requestEnvelope.request.intent.slots.item.value;
 
+    const { slots } = handlerInput.requestEnvelope.request.intent;
+    const day_and_count = DateUtil.convertDayAndCount(slots.day_and_count.value);
+    if ('' === day_and_count) {
+      let intentObj = handlerInput.requestEnvelope.request.intent;
+      intentObj.confirmationStatus = "IN_PROGRESS";
+      return handlerInput.responseBuilder
+        .speak('ごめんなさい、登録する曜日がわかりませんでした。毎週月曜や第一火曜のように指定してください')
+        .reprompt('もう一度登録する曜日を教えてください。')
+        .addElicitSlotDirective('day_and_count', intentObj)
+        .getResponse();
+    }
+
+    const item = slots.item.value;
     const key = day_and_count.count + day_and_count.day + item;
 
     const dynamo = new DAO(handlerInput);
@@ -22,8 +32,9 @@ const RegistIntentHandler = {
 
     if (_.filter(garbage_data, { 'key': key }).length != 0) {
       // すでにキーが登録済みの場合
+      let speechText = util.format(Message.REGIST_DUPLICATE, day_and_count.count, day_and_count.day, item);
       return handlerInput.responseBuilder
-        .speak(util.format(Message.REGIST_DUPLICATE, day_and_count.count,day_and_count.day,item) + Message.REGIST_AFTER)
+        .speak(speechText + Message.REGIST_AFTER)
         .reprompt(Message.HELP)
         .getResponse();
     }
@@ -35,8 +46,9 @@ const RegistIntentHandler = {
       dynamo.pushData(regist_data);
     }
 
+    let speechText = util.format(Message.REGIST_COMPLETE, day_and_count.count, day_and_count.day, item);
     return handlerInput.responseBuilder
-      .speak(util.format(Message.REGIST_COMPLETE, day_and_count.count,day_and_count.day,item) + Message.REGIST_AFTER)
+      .speak(speechText + Message.REGIST_AFTER)
       .reprompt(Message.HELP)
       .getResponse();
   },

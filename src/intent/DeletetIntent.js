@@ -13,20 +13,41 @@ const DeleteIntentHandler = {
   },
   async handle(handlerInput) {
 
-    const day_and_count = DateUtil.convertDayAndCount(handlerInput.requestEnvelope.request.intent.slots.day_and_count.value);
+    const { confirmationStatus, slots } = handlerInput.requestEnvelope.request.intent;
+    if (confirmationStatus === "DENIED") {
+      // 最終確認で「いいえ」と言われたら聞き直す
+      let intentObj = handlerInput.requestEnvelope.request.intent;
+      intentObj.confirmationStatus = "IN_PROGRESS";
+      return handlerInput.responseBuilder
+        .speak("何曜日のゴミを削除しますか？")
+        .addElicitSlotDirective('day_of_week', intentObj)
+        .getResponse();
+    }
+    const day_of_week = DateUtil.cleansing(slots.day_of_week.value);
+    if ('' === day_of_week) {
+      let intentObj = handlerInput.requestEnvelope.request.intent;
+      intentObj.confirmationStatus = "IN_PROGRESS";
+      return handlerInput.responseBuilder
+        .speak('ごめんなさい、登録する曜日がわかりませんでした。月曜や火曜のように指定してください')
+        .reprompt('もう一度登録する曜日を教えてください。')
+        .addElicitSlotDirective('day_of_week', intentObj)
+        .getResponse();
+    }
 
     const dynamo = new DAO(handlerInput);
     const garbage_data = await dynamo.getData();
 
-    const delete_data = _.filter(garbage_data, { "day": day_and_count.day, "count": day_and_count.count });
+    const delete_data = _.filter(garbage_data, { "day": day_of_week });
     if (delete_data.length === 0) {
       // データが存在しない場合
+      let speechText = util.format(Message.DELETE_NOT_FOUND, day_of_week)
       return handlerInput.responseBuilder
-        .speak(util.format(Message.DELETE_NOT_FOUND, day_and_count.count, day_and_count.day))
+        .speak(speechText + Message.DELETE_ANOTHER)
+        .reprompt(Message.HELP)
         .getResponse();
     }
 
-    const update_data = _.reject(garbage_data, { "day": day_and_count.day, "count": day_and_count.count });
+    const update_data = _.reject(garbage_data, { "day": day_of_week });
     dynamo.putData(update_data);
 
     // util.formatは残念ながらarray未対応！
@@ -41,7 +62,8 @@ const DeleteIntentHandler = {
     speechText += Message.DELETE_COMPLETE;
 
     return handlerInput.responseBuilder
-      .speak(speechText)
+      .speak(speechText + Message.DELETE_AFTER)
+      .reprompt(Message.HELP)
       .getResponse();
   },
 };
