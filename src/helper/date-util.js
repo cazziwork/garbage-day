@@ -13,7 +13,7 @@ module.exports = class DateUtil {
   }
 
   static getHourGreeting(hour) {
-    switch(hour) {
+    switch (hour) {
       case 19:
       case 20:
       case 21:
@@ -74,6 +74,10 @@ module.exports = class DateUtil {
     };
   }
 
+  static isValidDayOfWeek(value) {
+    return '' != this.cleansing(value);
+  }
+
   static cleansing(target) {
     switch (target) {
       case '月曜':
@@ -119,7 +123,7 @@ module.exports = class DateUtil {
         return '日曜';
 
       default:
-        return target;
+        return '';
 
     }
   }
@@ -380,7 +384,7 @@ module.exports = class DateUtil {
         return { count: '第五', day: '日曜' };
 
       default:
-        return {};
+        return '';
     }
   }
 
