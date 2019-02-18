@@ -1,0 +1,1006 @@
+{
+  "interactionModel": {
+      "languageModel": {
+          "invocationName": "ゴミ出しコンシェルジュ",
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.NavigateHomeIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.YesIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.NoIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.MoreIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.NavigateSettingsIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.NextIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.PageUpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.PageDownIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.PreviousIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.ScrollRightIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.ScrollDownIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.ScrollLeftIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.ScrollUpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "TellMeIntent",
+                  "slots": [
+                      {
+                          "name": "day_of_week",
+                          "type": "DayOfWeek",
+                          "samples": [
+                              "{day_of_week}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "おしえて"
+                  ]
+              },
+              {
+                  "name": "RegistIntent",
+                  "slots": [
+                      {
+                          "name": "day_of_week",
+                          "type": "DayOfWeek",
+                          "samples": [
+                              "{day_of_week}"
+                          ]
+                      },
+                      {
+                          "name": "count_of_week",
+                          "type": "CountOfWeek",
+                          "samples": [
+                              "{count_of_week}"
+                          ]
+                      },
+                      {
+                          "name": "item",
+                          "type": "Item",
+                          "samples": [
+                              "{item}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "{count_of_week} {day_of_week} {item} を登録して"
+                  ]
+              },
+              {
+                  "name": "DeleteIntent",
+                  "slots": [],
+                  "samples": [
+                      "削除して"
+                  ]
+              }
+          ],
+          "types": [
+              {
+                  "name": "DayAndCount",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "第五日曜",
+                              "synonyms": [
+                                  "だいごにちようび",
+                                  "だいごにちよう",
+                                  "第五日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五土曜",
+                              "synonyms": [
+                                  "だいごどようび",
+                                  "だいごどよう",
+                                  "第五土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五金曜",
+                              "synonyms": [
+                                  "だいごきんようび",
+                                  "だいごきんよう",
+                                  "第五金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五木曜",
+                              "synonyms": [
+                                  "だいごもくようび",
+                                  "だいごもくよう",
+                                  "第五木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五水曜",
+                              "synonyms": [
+                                  "だいごすいようび",
+                                  "だいごすいよう",
+                                  "第五水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五火曜",
+                              "synonyms": [
+                                  "だいごかようび",
+                                  "だいごかよう",
+                                  "第五火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第五月曜",
+                              "synonyms": [
+                                  "だいごげつようび",
+                                  "だいごげつよう",
+                                  "第五月曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四日曜",
+                              "synonyms": [
+                                  "だいよんにちようび",
+                                  "だいよんにちよう",
+                                  "第四日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四土曜",
+                              "synonyms": [
+                                  "だいよんどようび",
+                                  "だいよんどよう",
+                                  "第四土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四金曜",
+                              "synonyms": [
+                                  "だいよんきんようび",
+                                  "だいよんきんよう",
+                                  "第四金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四木曜",
+                              "synonyms": [
+                                  "だいよんもくようび",
+                                  "だいよんもくよう",
+                                  "第四木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四水曜",
+                              "synonyms": [
+                                  "だいよんすいようび",
+                                  "だいよんすいよう",
+                                  "第四水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四火曜",
+                              "synonyms": [
+                                  "だいよんかようび",
+                                  "だいよんかよう",
+                                  "第四火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四月曜",
+                              "synonyms": [
+                                  "だいよんげつようび",
+                                  "だいよんげつよう",
+                                  "第四月曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三日曜",
+                              "synonyms": [
+                                  "だいさんにちようび",
+                                  "だいさんにちよう",
+                                  "第三日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三土曜",
+                              "synonyms": [
+                                  "だいさんどようび",
+                                  "だいさんどよう",
+                                  "第三土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三金曜",
+                              "synonyms": [
+                                  "だいさんきんよう",
+                                  "だいさんきんようび",
+                                  "第三金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三木曜",
+                              "synonyms": [
+                                  "だいさんもくようび",
+                                  "だいさんもくよう",
+                                  "第三木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三水曜",
+                              "synonyms": [
+                                  "だいさんすいようび",
+                                  "だいさんすいよう",
+                                  "第三水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三火曜",
+                              "synonyms": [
+                                  "だいさんかようび",
+                                  "だいさんかよう",
+                                  "第三火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三月曜",
+                              "synonyms": [
+                                  "だいさんげつようび",
+                                  "だいさんげつよう",
+                                  "第三月曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二日曜",
+                              "synonyms": [
+                                  "だいににちようび",
+                                  "だいににちよう",
+                                  "第二日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二土曜",
+                              "synonyms": [
+                                  "だいにどようび",
+                                  "だいにどよう",
+                                  "第二土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二金曜",
+                              "synonyms": [
+                                  "だいにきんようび",
+                                  "だいにきんよう",
+                                  "第二金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二木曜",
+                              "synonyms": [
+                                  "だいにもくようび",
+                                  "だいにもくよう",
+                                  "第二木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二水曜",
+                              "synonyms": [
+                                  "だいにすいようび",
+                                  "だいにすいよう",
+                                  "第二水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二火曜",
+                              "synonyms": [
+                                  "だいにかようび",
+                                  "だいにかよう",
+                                  "第二火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二月曜",
+                              "synonyms": [
+                                  "だいにげつようび",
+                                  "だいにげつよう",
+                                  "第二月曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一日曜",
+                              "synonyms": [
+                                  "だいいちにちようび",
+                                  "だいいちにちよう",
+                                  "第一日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一土曜",
+                              "synonyms": [
+                                  "だいいちどようび",
+                                  "だいいちどよう",
+                                  "第一土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一金曜",
+                              "synonyms": [
+                                  "だいいちきんようび",
+                                  "だいいちきんよう",
+                                  "第一金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一木曜",
+                              "synonyms": [
+                                  "だいいちもくようび",
+                                  "だいいちもくよう",
+                                  "第一木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一水曜",
+                              "synonyms": [
+                                  "だいいちすいようび",
+                                  "だいいちすいよう",
+                                  "第一水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一火曜",
+                              "synonyms": [
+                                  "だいいちかようび",
+                                  "だいいちかよう",
+                                  "第一火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一月曜",
+                              "synonyms": [
+                                  "だいいちげつようび",
+                                  "だいいちげつよう",
+                                  "第一月曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週日曜",
+                              "synonyms": [
+                                  "まいしゅうにちようび",
+                                  "まいしゅうにちよう",
+                                  "毎週日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週土曜",
+                              "synonyms": [
+                                  "まいしゅうどようび",
+                                  "まいしゅうどよう",
+                                  "毎週土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週金曜",
+                              "synonyms": [
+                                  "まいしゅうきんようび",
+                                  "まいしゅうきんよう",
+                                  "毎週金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週木曜",
+                              "synonyms": [
+                                  "まいしゅうもくようび",
+                                  "まいしゅうもくよう",
+                                  "毎週木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週水曜",
+                              "synonyms": [
+                                  "まいしゅうすいようび",
+                                  "まいしゅうすいよう",
+                                  "毎週水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週火曜",
+                              "synonyms": [
+                                  "まいしゅうかようび",
+                                  "まいしゅうかよう",
+                                  "毎週火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週月曜",
+                              "synonyms": [
+                                  "まいしゅうげつようび",
+                                  "毎週月曜日",
+                                  "まいしゅうげつよう"
+                              ]
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "Item",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "燃えるゴミ"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "CountOfWeek",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "第五"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第四"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第三"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第二"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "第一"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "毎週"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "DayOfWeek",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "今日",
+                              "synonyms": [
+                                  "きょう"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "日曜",
+                              "synonyms": [
+                                  "にちようび",
+                                  "にちよう",
+                                  "日曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "土曜",
+                              "synonyms": [
+                                  "どようび",
+                                  "どよう",
+                                  "土曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "金曜",
+                              "synonyms": [
+                                  "きんようび",
+                                  "きんよう",
+                                  "金曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "木曜",
+                              "synonyms": [
+                                  "もくようび",
+                                  "もくよう",
+                                  "木曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "水曜",
+                              "synonyms": [
+                                  "すいようび",
+                                  "すいよう",
+                                  "水曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "火曜",
+                              "synonyms": [
+                                  "かようび",
+                                  "かよう",
+                                  "火曜日"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "月曜",
+                              "synonyms": [
+                                  "げつようび",
+                                  "げつよう",
+                                  "月曜日"
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      "dialog": {
+          "intents": [
+              {
+                  "name": "TellMeIntent",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "day_of_week",
+                          "type": "DayOfWeek",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.831654855715.1420388203661"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "RegistIntent",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "day_of_week",
+                          "type": "DayOfWeek",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.1374850622414.291490308535"
+                          }
+                      },
+                      {
+                          "name": "count_of_week",
+                          "type": "CountOfWeek",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.1374850622414.895770973360"
+                          }
+                      },
+                      {
+                          "name": "item",
+                          "type": "Item",
+                          "confirmationRequired": true,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "confirmation": "Confirm.Slot.1374850622414.266431106159",
+                              "elicitation": "Elicit.Slot.1374850622414.266431106159"
+                          }
+                      }
+                  ]
+              }
+          ],
+          "delegationStrategy": "ALWAYS"
+      },
+      "prompts": [
+          {
+              "id": "Slot.Validation.1498691632868.776819323347.267006555758",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を例えば げつよう や かよう のように教えてください"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Slot.1498691632868.1139175047950",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録するのは{item} でよろしいですか？"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.320276719097.799725039851.498355935230",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "曜日は月曜や火曜のように指定できます。登録する曜日を教えてください。"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日をおしえてください。月曜や火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.88757935258.248733017906",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "曜日間隔を教えてください。たとえば毎週や第一などが指定できます"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.88757935258.631316707879",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "何曜日の登録データを削除しますか？"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.88757935258.631316707879.659577096422",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録データを削除したい曜日をおしえてください。月曜や火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.293110889032.837687343487.796958927881",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "検索する曜日をおしえてください。月曜や火曜のように指定することができます。"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "曜日は月曜や火曜のように指定できます。検索する曜日を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.293110889032.855486682975.665670498297",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "検索できるのは 第一、第二、第三、第四、第五、毎週 のいずれかです。曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.395497113369.134506241853.421158643125",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録できるのは 第一、第二、第三、第四、第五、毎週 のいずれかです。曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.1467655744902.599099020800.242203673375",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録できるのは 第一、第二、第三、第四、第五、毎週 のいずれかです。曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.76843041761.1401400671957.305210773926",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "指定できるのは 第一、第二、第三、第四、第五、毎週 のいずれかです。曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.1353540128037.1083427621966.192545363042",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を教えてください。毎週月曜や第一火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.1353540128037.825693399675.32947794472",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を教えてください。毎週月曜や第一火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.291536821779.1470678698019.36584317194",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "検索する曜日を教えてください。月曜や毎週火曜、第一水曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.1108102616569.708284302562.554066474112",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "データを削除する曜日を教えてください。毎週月曜や第一火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Intent.1108102616569",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "{day_of_week} のゴミを削除してもいいですか？"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.855302044313.1329062797647",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "データを削除する曜日を教えてください。毎週月曜や第一火曜のように指定することができます。"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Slot.855302044313.1329062797647",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "{day_and_count} のデータを削除していいですか？"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Slot.208352057335.1001168898945",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "{day_of_week} のゴミを削除しますか？"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.933090140372.564519802266",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を教えてください"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.933090140372.732026865920",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.489163374702.1465894294528",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.489163374702.1310461218581",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日間隔を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Intent.27901441263",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録するのは {count_of_week} {day_of_week} {item} でよろしいですか？"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.1374850622414.291490308535",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日を教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.1374850622414.895770973360",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録する曜日間隔を教えてください。毎週や第一のように指定できます。"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.1374850622414.266431106159",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録するゴミを教えてください。"
+                  }
+              ]
+          },
+          {
+              "id": "Confirm.Slot.1374850622414.266431106159",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "登録するのは {item} でよろしいですか？"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.831654855715.1420388203661",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "いつのゴミが知りたいですか？"
+                  }
+              ]
+          }
+      ]
+  }
+}

@@ -19,6 +19,12 @@ module.exports = class DAO {
     this.save(persistentAttributes);
   }
 
+  async clearData() {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    persistentAttributes.data = [];
+    this.save(persistentAttributes);
+  }
+
   async pushData(data) {
     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
     persistentAttributes.data.push(data);

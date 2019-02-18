@@ -23,7 +23,7 @@ const DeleteIntentHandler = {
         .addElicitSlotDirective('day_of_week', intentObj)
         .getResponse();
     }
-    const day_of_week = DateUtil.cleansing(slots.day_of_week.value);
+    let day_of_week = DateUtil.cleansing(slots.day_of_week.value);
     if ('' === day_of_week) {
       let intentObj = handlerInput.requestEnvelope.request.intent;
       intentObj.confirmationStatus = "IN_PROGRESS";
@@ -37,7 +37,16 @@ const DeleteIntentHandler = {
     const dynamo = new DAO(handlerInput);
     const garbage_data = await dynamo.getData();
 
-    const delete_data = _.filter(garbage_data, { "day": day_of_week });
+    let delete_data = [];
+    if ('今日' === day_of_week) {
+      day_of_week = DateUtil.getDayAndCount(DateUtil.getToday()).day;
+    }
+    if ('全て' === day_of_week) {
+      delete_data = _.filter(garbage_data);
+    } else {
+      delete_data = _.filter(garbage_data, { 'day': day_of_week });
+    }
+    
     if (delete_data.length === 0) {
       // データが存在しない場合
       let speechText = util.format(Message.DELETE_NOT_FOUND, day_of_week)
@@ -47,8 +56,12 @@ const DeleteIntentHandler = {
         .getResponse();
     }
 
-    const update_data = _.reject(garbage_data, { "day": day_of_week });
-    dynamo.putData(update_data);
+    if ('全て' === day_of_week) {
+      await dynamo.clearData();
+    } else {
+      const update_data = _.reject(garbage_data, { "day": day_of_week });
+      await dynamo.putData(update_data);
+    }
 
     // util.formatは残念ながらarray未対応！
     let speechText = '';

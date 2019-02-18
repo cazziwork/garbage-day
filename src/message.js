@@ -10,7 +10,7 @@ module.exports = {
   REGIST_AFTER: '続けて登録したい場合は<break time="0.3s"/>登録して<break time="0.3s"/>といってください。',
 
   // TellMe
-  TELLME_NOT_FOUND: '登録されているデータがありませんでした。',
+  TELLME_NOT_FOUND: '登録されているデータがありませんでした。データを登録したい場合は<break time="0.3s"/>登録して<break time="0.3s"/>といってください。',
   TELLME_ITEM_LIST: '%s%s<break time="0.3s"/>%s',
   TELLME_ITEM_REGISTED: 'が登録されています。他の曜日を知りたい場合は、例えば<break time="0.3s"/>月曜日のゴミを教えて<break time="0.3s"/>といってください。',
 

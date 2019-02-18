@@ -12,17 +12,6 @@ const TellMeIntentHandler = {
   },
   async handle(handlerInput) {
 
-    const { slots } = handlerInput.requestEnvelope.request.intent;
-    if (undefined != slots.day_of_week.value && !DateUtil.isValidDayOfWeek(slots.day_of_week.value)) {
-      let intentObj = handlerInput.requestEnvelope.request.intent;
-      intentObj.confirmationStatus = "IN_PROGRESS";
-      return handlerInput.responseBuilder
-        .speak('ごめんなさい、曜日がわかりませんでした。月曜や火曜のように指定してください')
-        .reprompt('もう一度曜日を教えてください。')
-        .addElicitSlotDirective('day_of_week', intentObj)
-        .getResponse();
-    }
-
     const dynamo = new DAO(handlerInput);
     const garbage_data = await dynamo.getData();
     if ((_.filter(garbage_data)).length === 0) {
@@ -33,14 +22,38 @@ const TellMeIntentHandler = {
         .getResponse();
     }
 
+    const { slots } = handlerInput.requestEnvelope.request.intent;
     const day_of_week = DateUtil.cleansing(slots.day_of_week.value);
+    if ('' === day_of_week) {
+      let intentObj = handlerInput.requestEnvelope.request.intent;
+      intentObj.confirmationStatus = "IN_PROGRESS";
+      return handlerInput.responseBuilder
+        .speak('ごめんなさい、曜日がわかりませんでした。指定できるのは月曜や火曜のほかに、今日や全てといった指定ができます。もう一度曜日を教えてください。')
+        .reprompt('もう一度曜日を教えてください。')
+        .addElicitSlotDirective('day_of_week', intentObj)
+        .getResponse();
+    }
 
-    if ('' != day_of_week) {
-      // 曜日指定がある場合はその曜日の登録データを返す
-      const filter_data = _.filter(garbage_data, { 'day': day_of_week });
+    if ('今日' === day_of_week) {
+      // 曜日指定がない場合は今日と明日のゴミを返す
+      const today_list = DateUtil.getItemList(garbage_data, DateUtil.getToday());
+      const tommorow_list = DateUtil.getItemList(garbage_data, DateUtil.getTommorow());
+      let speechText = this.getGarbageWord(today_list, tommorow_list);
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .withShouldEndSession(true)
+        .getResponse();
+
+    } else {
+
+      let filter_data = [];
+      if ('全て' === day_of_week) {
+        filter_data = _.filter(garbage_data);
+      } else {
+        filter_data = _.filter(garbage_data, { 'day': day_of_week });
+      }
 
       let speechText = '';
-
       // TODO keyの配列を渡したいけど、それだと発話が微妙なので小細工する
       _.forEach(filter_data, function (data) {
         if (speechText === '') {
@@ -56,18 +69,6 @@ const TellMeIntentHandler = {
         .reprompt(Message.HELP)
         .getResponse();
     }
-
-    // 曜日指定がない場合は今日と明日のゴミを返す
-    // 唯一このパターンのみrepromptさせずにセッションを切る。
-    const today_list = DateUtil.getItemList(garbage_data, DateUtil.getToday());
-    const tommorow_list = DateUtil.getItemList(garbage_data, DateUtil.getTommorow());
-
-    const speechText = this.getGarbageWord(today_list, tommorow_list);
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .withShouldEndSession(true)
-      .getResponse();
-
   },
   getGarbageWord(today_list, tommorow_list) {
     const today_word = this.createRegistWordBody(today_list);
