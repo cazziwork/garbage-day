@@ -1,8 +1,8 @@
 module.exports = {
-  SKILL_NAME: '我が家のゴミ出し',
+  SKILL_NAME: 'ゴミ出しコンシェルジュ',
 
   // Launch
-  LAUNCH: 'このスキルでゴミの日を登録しておけば、教えて というだけで今日と明日のゴミをお知らせします。',
+  LAUNCH: 'このスキルでゴミの日を登録しておけば、今日のゴミを教えて というだけで今日と明日のゴミをお知らせします。',
 
   // Regist
   REGIST_DUPLICATE: '%s%s<break time="0.3s"/>%sはすでに登録されています。',
@@ -12,14 +12,14 @@ module.exports = {
   // TellMe
   TELLME_NOT_FOUND: '登録されているデータがありませんでした。データを登録したい場合は<break time="0.3s"/>登録して<break time="0.3s"/>といってください。',
   TELLME_ITEM_LIST: '%s%s<break time="0.3s"/>%s',
-  TELLME_ITEM_REGISTED: 'が登録されています。他の曜日を知りたい場合は、例えば<break time="0.3s"/>月曜日のゴミを教えて<break time="0.3s"/>といってください。',
+  TELLME_ITEM_REGISTED: 'が登録されています。他の曜日を知りたい場合は、例えば<break time="0.3s"/>月曜日のゴミを教えて<break time="0.3s"/>のように言ってください。',
 
   // Delete
   DELETE_NOT_FOUND: '%sにはまだデータが登録されていません。',
   DELETE_ITEM_LIST: '%s%s<break time="0.3s"/>%s',
   DELETE_COMPLETE: 'を削除しました。',
   DELETE_AFTER: '続けて削除したい場合は<break time="0.3s"/>削除して<break time="0.3s"/>といってください。',
-  DELETE_ANOTHER: '他の曜日を削除したい場合は<break time="0.3s"/>削除して<break time="0.3s"/>といってください。',
+  DELETE_ANOTHER: '他の曜日を削除したい場合は、たとえば<break time="0.3s"/>月曜を削除して<break time="0.3s"/>のように言ってください。',
 
   // etc
   TODAYS_GARBAGE: '今日のゴミは',

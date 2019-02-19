@@ -28,8 +28,8 @@ const DeleteIntentHandler = {
       let intentObj = handlerInput.requestEnvelope.request.intent;
       intentObj.confirmationStatus = "IN_PROGRESS";
       return handlerInput.responseBuilder
-        .speak('ごめんなさい、登録する曜日がわかりませんでした。月曜や火曜のように指定してください')
-        .reprompt('もう一度登録する曜日を教えてください。')
+        .speak('ごめんなさい、削除する曜日がわかりませんでした。月曜や火曜のように指定してください')
+        .reprompt('もう一度削除する曜日を教えてください。')
         .addElicitSlotDirective('day_of_week', intentObj)
         .getResponse();
     }

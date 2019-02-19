@@ -52,6 +52,13 @@ const TellMeIntentHandler = {
       } else {
         filter_data = _.filter(garbage_data, { 'day': day_of_week });
       }
+      if ((_.filter(filter_data)).length === 0) {
+        // データ登録がない場合
+        return handlerInput.responseBuilder
+          .speak(Message.TELLME_NOT_FOUND)
+          .reprompt(Message.HELP)
+          .getResponse();
+      }
 
       let speechText = '';
       // TODO keyの配列を渡したいけど、それだと発話が微妙なので小細工する
