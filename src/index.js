@@ -10,6 +10,7 @@ const ErrorHandler = require('./intent/default/Error');
 const RegistIntentHandler = require('./intent/RegistIntent');
 const DeleteIntentHandler = require('./intent/DeletetIntent');
 const TellMeIntentHandler = require('./intent/TellMeIntent');
+const SwitchActionModeIntent = require('./intent/SwitchActionModeIntent');
 
 const config = {
   tableName: 'GarbageDayTable',
@@ -25,6 +26,7 @@ exports.handler = skillBuilder
     RegistIntentHandler,
     DeleteIntentHandler,
     TellMeIntentHandler,
+    SwitchActionModeIntent,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
