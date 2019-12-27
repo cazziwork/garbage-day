@@ -23,7 +23,9 @@ const TellMeIntentHandler = {
     }
 
     const { slots } = handlerInput.requestEnvelope.request.intent;
-    const day_of_week = DateUtil.cleansing(slots.day_of_week.value);
+    console.log('slots:', slots);
+
+    const day_of_week = DateUtil.cleansing(slots.day_of_week.value || '今日');
     if ('' === day_of_week) {
       let intentObj = handlerInput.requestEnvelope.request.intent;
       intentObj.confirmationStatus = "IN_PROGRESS";
@@ -35,7 +37,6 @@ const TellMeIntentHandler = {
     }
 
     if ('今日' === day_of_week) {
-      // 曜日指定がない場合は今日と明日のゴミを返す
       const today_list = DateUtil.getItemList(garbage_data, DateUtil.getToday());
       const tommorow_list = DateUtil.getItemList(garbage_data, DateUtil.getTommorow());
       let speechText = this.getGarbageWord(today_list, tommorow_list);

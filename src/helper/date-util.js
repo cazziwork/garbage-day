@@ -124,6 +124,10 @@ module.exports = class DateUtil {
 
       case '今日':
       case 'きょう':
+      case '明日':
+      case 'あした':
+      case '次の日':
+      case 'つぎのひ':
         return '今日';
 
       case '全て':

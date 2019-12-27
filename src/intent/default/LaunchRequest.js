@@ -1,4 +1,5 @@
 
+const DAO = require('../../helper/db-access');
 const DateUtil = require('../../helper/date-util');
 const Message = require('../../message');
 
@@ -6,11 +7,25 @@ const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
 
-    // TODO 本当はここでDynamoを見に行ってデータが登録済みならいきなりゴミの日を知らせようとおもったけど、
-    // フレームワークの作りとしてできないため断念。
-    // 今後の機能拡張を期待してTODOのままとしておく。
+    console.log('userId:', handlerInput.requestEnvelope.context.System.user.userId);
+
+    const dynamo = new DAO(handlerInput);
+    const template_mode = await dynamo.getTemplateActionMode();
+    console.log('mode:', template_mode);
+
+    if (template_mode) {
+      // TellMeIntentへ
+      return handlerInput.responseBuilder
+        .addDelegateDirective({
+          name: 'TellMeIntent',
+          confirmationStatus: 'NONE',
+          slots: {}
+        })
+        .speak(DateUtil.getHourGreeting((new Date().getHours())))
+        .getResponse();
+    }
 
     let speechText = DateUtil.getHourGreeting((new Date().getHours()));
     speechText += Message.LAUNCH;

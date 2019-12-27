@@ -21,6 +21,9 @@ module.exports = {
   DELETE_AFTER: '続けて削除したい場合は<break time="0.3s"/>削除して<break time="0.3s"/>といってください。',
   DELETE_ANOTHER: '他の曜日を削除したい場合は、たとえば<break time="0.3s"/>月曜を削除して<break time="0.3s"/>のように言ってください。',
 
+  // Switch
+  SWITCH_COMPLETE: '定型アクションモードを %s にしました。',
+
   // etc
   TODAYS_GARBAGE: '今日のゴミは',
   TOMMOROW_GARBAGE: '明日のゴミは',

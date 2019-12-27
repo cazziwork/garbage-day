@@ -4,6 +4,17 @@ module.exports = class DAO {
     this.attributesManager = attributesManager;
   }
 
+  async getTemplateActionMode() {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    return persistentAttributes.template_action;
+  }
+
+  async setTemplateActionMode(mode) {
+    let persistentAttributes = await this.attributesManager.getPersistentAttributes();
+    persistentAttributes.template_action = mode;
+    this.save(persistentAttributes);
+  }
+
   async getData() {
     let persistentAttributes = await this.attributesManager.getPersistentAttributes();
     return persistentAttributes.data;
