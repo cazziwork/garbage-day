@@ -21,7 +21,7 @@ const LaunchRequestHandler = {
         .addDelegateDirective({
           name: 'TellMeIntent',
           confirmationStatus: 'NONE',
-          slots: {}
+          slots: handlerInput.requestEnvelope.request.intent
         })
         .speak(DateUtil.getHourGreeting((new Date().getHours())))
         .getResponse();
