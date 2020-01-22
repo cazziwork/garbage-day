@@ -3,6 +3,7 @@ const util = require('util');
 
 const DAO = require('../helper/db-access');
 const DateUtil = require('../helper/date-util');
+const WordUtil = require('../helper/word-util');
 const Message = require('../message');
 
 const TellMeIntentHandler = {
@@ -39,7 +40,7 @@ const TellMeIntentHandler = {
     if ('今日' === day_of_week) {
       const today_list = DateUtil.getItemList(garbage_data, DateUtil.getToday());
       const tommorow_list = DateUtil.getItemList(garbage_data, DateUtil.getTommorow());
-      let speechText = this.getGarbageWord(today_list, tommorow_list);
+      let speechText = WordUtil.getGarbageWord(today_list, tommorow_list);
       return handlerInput.responseBuilder
         .speak(speechText)
         .withShouldEndSession(true)
@@ -77,17 +78,6 @@ const TellMeIntentHandler = {
         .reprompt(Message.HELP)
         .getResponse();
     }
-  },
-  getGarbageWord(today_list, tommorow_list) {
-    const today_word = this.createRegistWordBody(today_list);
-    const tommorow_word = this.createRegistWordBody(tommorow_list);
-    return Message.TODAYS_GARBAGE + today_word + Message.TOMMOROW_GARBAGE + tommorow_word;
-  },
-  createRegistWordBody(garbage_list) {
-    if (garbage_list.length === 0) {
-      return Message.NOT_EXITS;
-    }
-    return garbage_list + 'です。';
   }
 };
 
